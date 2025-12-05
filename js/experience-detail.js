@@ -93,129 +93,212 @@ function countryCodeToFlagEmoji(code) {
   // =============================================================
   // Função que trata do booking: preços, idades, total, submit...
   // =============================================================
-  function initBookingPanel(exp) {
-    const panel = document.getElementById('bookingPanel');
-    if (!panel) return;
+ function initBookingPanel(exp) {
+  const panel = document.getElementById('bookingPanel');
+  if (!panel) return;
 
-    const minAge =
-      (exp.minAge !== undefined ? Number(exp.minAge) : null) ??
-      Number(panel.dataset.minAge || 0);
+  const minAge =
+    (exp.minAge !== undefined ? Number(exp.minAge) : null) ??
+    Number(panel.dataset.minAge || 0);
 
-    const priceAdult =
-      (exp.priceAdult !== undefined ? Number(exp.priceAdult) : null) ??
-      Number(panel.dataset.priceAdult || 0);
+  const priceAdult =
+    (exp.priceAdult !== undefined ? Number(exp.priceAdult) : null) ??
+    Number(panel.dataset.priceAdult || 0);
 
-    const priceChild =
-      (exp.priceChild !== undefined ? Number(exp.priceChild) : null) ??
-      Number(panel.dataset.priceChild || 0);
+  const priceChild =
+    (exp.priceChild !== undefined ? Number(exp.priceChild) : null) ??
+    Number(panel.dataset.priceChild || 0);
 
-    const showExtraInfo =
-      exp.requiresExtraInfo !== undefined ? !!exp.requiresExtraInfo : false;
+  const showExtraInfo =
+    exp.requiresExtraInfo !== undefined ? !!exp.requiresExtraInfo : false;
 
-    const basePriceSpan = document.getElementById('exp-base-price');
-    const minAgeSpan = document.getElementById('exp-min-age');
-    const ageNote = document.getElementById('exp-age-note');
-    const extraInfoBlock = document.getElementById('exp-extra-info');
+  const basePriceSpan = document.getElementById('exp-base-price');
+  const minAgeSpan = document.getElementById('exp-min-age');
+  const ageNote = document.getElementById('exp-age-note');
+  const extraInfoBlock = document.getElementById('exp-extra-info');
 
-    const adultsSelect = document.getElementById('exp-adults');
-    const childrenSelect = document.getElementById('exp-children');
-    const totalSpan = document.getElementById('exp-total');
-    const bookingForm = document.getElementById('bookingForm');
-    const dateInput = document.getElementById('exp-date');
+  const adultsSelect = document.getElementById('exp-adults');
+  const childrenSelect = document.getElementById('exp-children');
+  const totalSpan = document.getElementById('exp-total');
+  const bookingForm = document.getElementById('bookingForm');
+  const dateInput = document.getElementById('exp-date');
 
-    // Preço base
-    if (basePriceSpan && priceAdult) {
-      basePriceSpan.textContent = priceAdult.toFixed(0);
-    }
+  // elementos do modal
+  const confirmModal = document.getElementById('bookingConfirmModal');
+  const modalSummary = document.getElementById('modal-summary');
+  const modalContactLabel = document.getElementById('modal-contact-label');
+  const modalContactValue = document.getElementById('modal-contact-value');
+  const modalFinalNote = document.getElementById('modal-final-note');
+  const modalCancelBtn = document.getElementById('modalCancelBtn');
+  const modalConfirmBtn = document.getElementById('modalConfirmBtn');
 
-    // Idade mínima
-    if (minAgeSpan && minAge) {
-      minAgeSpan.textContent = minAge;
-    }
-    if (ageNote && !minAge) {
-      ageNote.textContent =
-        'Age information will be confirmed by our team.';
-    }
-
-    // Bloco de info extra (ex.: canyoning)
-    if (extraInfoBlock) {
-      if (showExtraInfo) {
-        extraInfoBlock.classList.remove('hidden');
-      } else {
-        extraInfoBlock.classList.add('hidden');
-      }
-    }
-
-    // Limites de data (de hoje até +1 ano)
-    if (dateInput) {
-      const today = new Date();
-
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      dateInput.min = `${yyyy}-${mm}-${dd}`;
-
-      const oneYearLater = new Date(today);
-      oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-
-      const maxY = oneYearLater.getFullYear();
-      const maxM = String(oneYearLater.getMonth() + 1).padStart(2, '0');
-      const maxD = String(oneYearLater.getDate()).padStart(2, '0');
-      dateInput.max = `${maxY}-${maxM}-${maxD}`;
-    }
-
-    function updateTotal() {
-      if (!adultsSelect || !childrenSelect || !totalSpan) return;
-      const adults = Number(adultsSelect.value || 0);
-      const children = Number(childrenSelect.value || 0);
-      const total = adults * priceAdult + children * priceChild;
-      totalSpan.textContent = total.toFixed(0);
-    }
-
-    if (adultsSelect) adultsSelect.addEventListener('change', updateTotal);
-    if (childrenSelect)
-      childrenSelect.addEventListener('change', updateTotal);
-
-    updateTotal();
-
-    if (!bookingForm) return;
-
-    bookingForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const adults = adultsSelect ? Number(adultsSelect.value || 0) : 0;
-      const children = childrenSelect
-        ? Number(childrenSelect.value || 0)
-        : 0;
-      const date = dateInput ? dateInput.value : '';
-
-      if (!date) {
-        alert('Please select a date.');
-        return;
-      }
-
-      if (adults + children === 0) {
-        alert('Please select at least 1 participant.');
-        return;
-      }
-
-      if (minAge && exp.type === 'canyoning') {
-        // Aqui poderás validar idades individuais no futuro.
-      }
-
-      const totalText = totalSpan ? totalSpan.textContent : '0';
-
-      alert(
-        `Booking request for "${exp.title}":\n` +
-          `Date: ${date}\n` +
-          `Adults: ${adults}\n` +
-          `Children: ${children}\n` +
-          `Estimated total: €${totalText}`
-      );
-
-      window.location.href = 'index.html#contact';
-    });
+  // Preço base
+  if (basePriceSpan && priceAdult) {
+    basePriceSpan.textContent = priceAdult.toFixed(0);
   }
+
+  // Idade mínima
+  if (minAgeSpan && minAge) {
+    minAgeSpan.textContent = minAge;
+  }
+  if (ageNote && !minAge) {
+    ageNote.textContent =
+      'Age information will be confirmed by our team.';
+  }
+
+  // Bloco de info extra (ex.: canyoning)
+  if (extraInfoBlock) {
+    if (showExtraInfo) {
+      extraInfoBlock.classList.remove('hidden');
+    } else {
+      extraInfoBlock.classList.add('hidden');
+    }
+  }
+
+  // Limites de data (de hoje até +1 ano)
+  if (dateInput) {
+    const today = new Date();
+
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    dateInput.min = `${yyyy}-${mm}-${dd}`;
+
+    const oneYearLater = new Date(today);
+    oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+
+    const maxY = oneYearLater.getFullYear();
+    const maxM = String(oneYearLater.getMonth() + 1).padStart(2, '0');
+    const maxD = String(oneYearLater.getDate()).padStart(2, '0');
+    dateInput.max = `${maxY}-${maxM}-${maxD}`;
+  }
+
+  function updateTotal() {
+    if (!adultsSelect || !childrenSelect || !totalSpan) return;
+    const adults = Number(adultsSelect.value || 0);
+    const children = Number(childrenSelect.value || 0);
+    const total = adults * priceAdult + children * priceChild;
+    totalSpan.textContent = total.toFixed(0);
+  }
+
+  if (adultsSelect) adultsSelect.addEventListener('change', updateTotal);
+  if (childrenSelect)
+    childrenSelect.addEventListener('change', updateTotal);
+
+  updateTotal();
+
+  // listeners do modal
+  function getSelectedContactType() {
+    if (!confirmModal) return 'email';
+    const checked = confirmModal.querySelector(
+      'input[name="contactType"]:checked'
+    );
+    return checked ? checked.value : 'email';
+  }
+
+  function refreshModalTexts() {
+    const type = getSelectedContactType();
+    if (!modalContactLabel || !modalFinalNote || !modalContactValue) return;
+
+    if (type === 'whatsapp') {
+      modalContactLabel.textContent = 'WhatsApp number';
+      modalContactValue.placeholder = '+351 9xx xxx xxx';
+      modalFinalNote.textContent =
+        'Your booking request has been created. Our team will confirm availability and you will receive that confirmation via WhatsApp.';
+    } else {
+      modalContactLabel.textContent = 'Email';
+      modalContactValue.placeholder = 'your@email.com';
+      modalFinalNote.textContent =
+        'Your booking request has been created. Our team will confirm availability and you will receive that confirmation via email.';
+    }
+  }
+
+  if (confirmModal) {
+    const contactRadios = confirmModal.querySelectorAll(
+      'input[name="contactType"]'
+    );
+    contactRadios.forEach((radio) => {
+      radio.addEventListener('change', refreshModalTexts);
+    });
+
+    if (modalCancelBtn) {
+      modalCancelBtn.addEventListener('click', () => {
+        confirmModal.close();
+      });
+    }
+
+    if (modalConfirmBtn) {
+      modalConfirmBtn.addEventListener('click', () => {
+        const type = getSelectedContactType();
+        const contact = modalContactValue ? modalContactValue.value.trim() : '';
+
+        if (!contact) {
+          alert(
+            type === 'whatsapp'
+              ? 'Please enter your WhatsApp number.'
+              : 'Please enter your email address.'
+          );
+          return;
+        }
+
+        const channelLabel = type === 'whatsapp' ? 'WhatsApp' : 'email';
+
+        // Aqui, no futuro, podes enviar estes dados para a tua API.
+        alert(
+          `Your booking request has been registered.\n` +
+            `Our team will confirm availability and you will receive the confirmation via ${channelLabel}: ${contact}.`
+        );
+
+        confirmModal.close();
+        if (bookingForm) bookingForm.reset();
+        updateTotal();
+      });
+    }
+
+    // inicializa texto do modal
+    refreshModalTexts();
+  }
+
+  if (!bookingForm) return;
+
+  bookingForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const adults = adultsSelect ? Number(adultsSelect.value || 0) : 0;
+    const children = childrenSelect
+      ? Number(childrenSelect.value || 0)
+      : 0;
+    const date = dateInput ? dateInput.value : '';
+
+    if (!date) {
+      alert('Please select a date.');
+      return;
+    }
+
+    if (adults + children === 0) {
+      alert('Please select at least 1 participant.');
+      return;
+    }
+
+    const totalText = totalSpan ? totalSpan.textContent : '0';
+
+    if (modalSummary && confirmModal) {
+      modalSummary.textContent =
+        `"${exp.title}"\n` +
+        `Date: ${date}\n` +
+        `Adults: ${adults}\n` +
+        `Children: ${children}\n` +
+        `Estimated total: €${totalText}`;
+      refreshModalTexts();
+      if (typeof confirmModal.showModal === 'function') {
+        confirmModal.showModal();
+      } else {
+        confirmModal.classList.add('modal-open');
+      }
+    }
+  });
+}
+
 
   // =============================================================
   // Similar Experiences (mesma categoria)
