@@ -17,8 +17,26 @@
     "priceAdult": 45,
     "priceChild": 30,
     "minAge": 7,
-    "requiresExtraInfo": false,
-    "type": "hike"
+    "requiresExtraInfo": true,
+    "type": "hike",
+
+    "extraInfo": {
+      "enabled": true,
+      "title": "Before you book",
+      "fields": [
+        {
+          "type": "checkbox",
+          "name": "fitnessOk",
+          "label": "All participants are comfortable walking for several hours on uneven terrain."
+        },
+        {
+          "type": "textarea",
+          "name": "mobilityNotes",
+          "label": "Any injuries or mobility issues we should know about?",
+          "placeholder": "Optional, but helps us adapt the pace and difficulty of the walk."
+        }
+      ]
+    }
   },
 
   {
@@ -39,8 +57,26 @@
     "priceAdult": 65,
     "priceChild": 45,
     "minAge": 6,
-    "requiresExtraInfo": false,
-    "type": "tour"
+    "requiresExtraInfo": true,
+    "type": "tour",
+
+    "extraInfo": {
+      "enabled": true,
+      "title": "Before you book",
+      "fields": [
+        {
+          "type": "textarea",
+          "name": "dietaryRestrictions",
+          "label": "Any allergies or dietary restrictions?",
+          "placeholder": "E.g. vegetarian, vegan, gluten-free, nut allergy, lactose intolerance..."
+        },
+        {
+          "type": "checkbox",
+          "name": "alcoholOk",
+          "label": "All participants joining the wine tasting are over the legal drinking age."
+        }
+      ]
+    }
   },
 
   {
@@ -62,6 +98,24 @@
     "priceChild": 65,
     "minAge": 12,
     "requiresExtraInfo": true,
-    "type": "canyoning"
+    "type": "canyoning",
+
+    "extraInfo": {
+      "enabled": true,
+      "title": "Before you book",
+      "fields": [
+        {
+          "type": "checkbox",
+          "name": "canSwim",
+          "label": "All participants can swim confidently in open water."
+        },
+        {
+          "type": "textarea",
+          "name": "medicalNotes",
+          "label": "Any medical conditions we should know about?",
+          "placeholder": "Optional, but highly recommended for canyoning and adventure activities."
+        }
+      ]
+    }
   }
 ]
