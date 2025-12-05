@@ -1,0 +1,43 @@
+<!-- partials/header.html -->
+<header id="topbar"
+  class="w-full bg-[#163029] text-[#d9c89e] sticky top-0 z-[1000] shadow-md transition-transform duration-300">
+  <div class="max-w-7xl mx-auto h-14 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+
+    <!-- Esquerda: Logo + Nome -->
+    <a href="index.html" class="flex items-center gap-2 hover:opacity-90 transition">
+      <img src="../images/WD_simple.png" alt="Logo da What to Do" width="32" height="32" class="rounded-md">
+      <!-- <span class="font-semibold tracking-wide">What to Do</span> -->
+    </a>
+
+    <!-- Centro: Links -->
+    <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+      <a id="nav-home" href="index.html" class="hover:text-[#c3b27d] transition">Home</a>
+      <a id="nav-experiences" href="experiences.html" class="hover:text-[#c3b27d] transition">Experiences</a>
+      <a id="nav-insights" href="insights.html" class="hover:text-[#c3b27d] transition">Insights</a>
+      <!-- Contact Us aponta para o bloco “Get in Touch” da home -->
+      <a id="nav-contact" href="index.html#contact" class="hover:text-[#c3b27d] transition">Contact Us</a>
+    </nav>
+
+
+    <!-- Direita: Pesquisa 
+    <form onsubmit="handleGlobalSearch(); return false;" class="hidden sm:flex items-center gap-2">
+      <input id="global-search-input" type="search" placeholder="Search"
+        class="bg-[#0f241d] text-[#d9c89e] placeholder-[#d9c89e]/70 border border-[#d9c89e]/30 rounded-md px-3 py-1.5 w-44 focus:outline-none focus:ring-2 focus:ring-[#d9c89e]" />
+      <button type="submit"
+        class="bg-[#d9c89e] rounded-md px-3 py-1.5 hover:brightness-95 transition flex items-center justify-center"
+        aria-label="Pesquisar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+          stroke="#163029" stroke-width="1.8">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </button>
+    </form --> 
+
+    <div class="lang-switch lang-switch--header">
+      <button class="lang-option" data-lang="en" type="button">EN</button>
+      <button class="lang-option" data-lang="pt" type="button">PT</button>
+    </div>
+
+  </div>
+</header>

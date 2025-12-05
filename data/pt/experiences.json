@@ -1,0 +1,67 @@
+[
+  {
+    "id": "levada-walk",
+    "title": "Aventura na Levada",
+    "summary": "Um passeio tranquilo pela floresta Laurissilva da Madeira, com vistas panorâmicas e contacto direto com a natureza.",
+    "category": "Aventura",
+    "duration": "4–5 horas",
+    "difficulty": "Moderado",
+    "location": "Ilha da Madeira",
+    "groupSize": "Máx. 12 pessoas",
+
+    "rating": 4.9,
+    "reviews": 127,
+
+    "image": "https://source.unsplash.com/1200x800/?levada,madeira",
+
+    "priceAdult": 45,
+    "priceChild": 30,
+    "minAge": 7,
+    "requiresExtraInfo": false,
+    "type": "hike"
+  },
+
+  {
+    "id": "food-wine-tour",
+    "title": "Tour Gastronómico & Vinho Madeira",
+    "summary": "Uma viagem deliciosa pelos sabores tradicionais da Madeira e pelo seu famoso vinho fortificado.",
+    "category": "Gastronomia",
+    "duration": "3 horas",
+    "difficulty": "Fácil",
+    "location": "Funchal",
+    "groupSize": "Máx. 10 pessoas",
+
+    "rating": 4.8,
+    "reviews": 89,
+
+    "image": "https://source.unsplash.com/1200x800/?wine,food,porto",
+
+    "priceAdult": 65,
+    "priceChild": 45,
+    "minAge": 6,
+    "requiresExtraInfo": false,
+    "type": "tour"
+  },
+
+  {
+    "id": "canyoning-ribeira",
+    "title": "Canyoning na Ribeira das Cales",
+    "summary": "Uma aventura emocionante com rapéis, saltos, escorregas naturais e paisagens de montanha únicas.",
+    "category": "Canyoning",
+    "duration": "4 horas",
+    "difficulty": "Moderado-Difícil",
+    "location": "Ribeira das Cales",
+    "groupSize": "Máx. 8 pessoas",
+
+    "rating": 4.8,
+    "reviews": 223,
+
+    "image": "https://source.unsplash.com/1200x800/?canyoning,waterfall,madeira",
+
+    "priceAdult": 95,
+    "priceChild": 65,
+    "minAge": 12,
+    "requiresExtraInfo": true,
+    "type": "canyoning"
+  }
+]

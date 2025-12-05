@@ -1,0 +1,502 @@
+/* Common CSS for Madeira Island experiences portal */
+/* daisyUI Theme Variables Customization */
+:root {
+  /* Primary colors - Dark Green */
+  --color-primary: rgba(22, 48, 41, 1);
+  --color-primary-content: rgba(22, 48, 41, 1);
+
+  /* Secondary/Accent - Dark earth green for natural, organic feel */
+  --color-secondary: rgba(22, 48, 41, 1);
+  --color-secondary-content: rgba(22, 48, 41, 1);
+
+  /* Accent - Gold for premium highlights */
+  --color-accent: rgba(217, 200, 158, 1);
+  --color-accent-content: rgba(217, 200, 158, 1);
+
+  /* Base backgrounds - Clean whites and light grays */
+  --color-base-100: rgba(255, 255, 255, 1);
+  --color-base-200: rgba(249, 250, 251, 1);
+  --color-base-300: rgba(229, 231, 235, 1);
+
+  /* Semantic colors */
+  --color-success: rgba(22, 48, 41, 1);
+  --color-warning: rgba(22, 48, 41, 1);
+  --color-error: rgba(217, 200, 158, 1);
+  --color-info: rgba(22, 48, 41, 1);
+
+  /* Border radius for modern feel */
+  --radius-box: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-selector: 0.5rem;
+
+  /* Border for minimal separation */
+  --border: 1px;
+}
+
+/* Additional custom styles for common usage */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shadow-elegant {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Header sticky behavior */
+.header-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+/* Typography weights */
+.font-medium-custom {
+  font-weight: 500;
+}
+
+.font-semibold-custom {
+  font-weight: 600;
+}
+
+/* Focus states for accessibility */
+.focus-visible:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Minimalist spacing helpers */
+.spacing-base {
+  padding: 1rem;
+}
+
+.spacing-large {
+  padding: 2rem;
+}
+
+/* Elegant hover effects */
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Hero Section Parallax Effect */
+.hero {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Carousel smooth transitions */
+.carousel-item {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Quick view button hover effect */
+.quick-view-btn:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Card hover animations */
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Gradient background for membership section */
+.bg-gradient-to-br {
+  background: linear-gradient(135deg, #0b2d3a, #10250e);
+}
+
+/* Enhanced button animations */
+.btn:hover {
+  transform: translateY(-2px);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom button color override */
+.btn-primary {
+  background-color: #163029 !important;
+  border-color: #163029 !important;
+  color: white !important;
+}
+
+.btn-primary:hover {
+  background-color: #0f241d !important;
+  border-color: #0f241d !important;
+  color: white !important;
+}
+
+.btn-accent {
+  background-color: #163029 !important;
+  border-color: #163029 !important;
+  color: white !important;
+}
+
+.btn-accent:hover {
+  background-color: #0f241d !important;
+  border-color: #0f241d !important;
+  color: white !important;
+}
+
+.btn-circle {
+  background-color: #163029 !important;
+  border-color: #163029 !important;
+  color: white !important;
+}
+
+.btn-circle:hover {
+  background-color: #0f241d !important;
+  border-color: #0f241d !important;
+  color: white !important;
+}
+
+/* Icon hover effects */
+.iconify:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Text line clamping for consistent card heights */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Responsive text sizing for hero */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 3rem;
+    line-height: 1.1;
+  }
+
+  .hero p {
+    font-size: 1.125rem;
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus states */
+.btn:focus-visible,
+.card:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Badge colors */
+.badge:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+.badge-primary,
+.badge-secondary,
+.badge-accent {
+  background-color: #d9c89e !important;
+  border-color: #d9c89e !important;
+  color: #163029 !important;
+}
+
+/* Carousel nav buttons */
+.carousel .btn-circle {
+  backdrop-filter: blur(8px);
+  background-color: #163029 !important;
+  border: none;
+  color: white !important;
+}
+
+.carousel .btn-circle:hover {
+  background-color: #0f241d !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+/* Loading & helpers */
+.loading-state {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Hide scrollbar (WebKit) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  font-size: 17px;
+}
+
+body {
+  position: relative;
+}
+
+/* Selection/highlight helpers (safe to keep; inactive by default) */
+.hover_selection,
+.selected_selection {
+  display: none !important;
+}
+
+/* Animated border loader (optional) */
+@keyframes move-border {
+  100% {
+    background-position: 200% 0, -200% 100%, 0 -200%, 100% 200%;
+  }
+}
+
+/* Footer headings size */
+.irfy8x.spark-custom-irfy8x#irfy8x,
+.i7ffij.spark-custom-i7ffij#i7ffij,
+#id2tji.spark-custom-id2tji {
+  font-size: 25px;
+}
+
+/* Theme text color tweaks */
+#ii696.spark-custom-ii696,
+#iu237.spark-custom-iu237,
+#i53vy.spark-custom-i53vy,
+#ijhgm.spark-custom-ijhgm,
+#ilc66.spark-custom-ilc66,
+#ig0cj.spark-custom-ig0cj,
+#ik14l.spark-custom-ik14l,
+.idox5c.spark-custom-idox5c#idox5c,
+#i1ge6.spark-custom-i1ge6,
+.izffv6.spark-custom-izffv6#izffv6,
+#i6btc.spark-custom-i6btc,
+#ip9l5y.spark-custom-ip9l5y,
+#i1n7lx.spark-custom-i1n7lx,
+#izwkja.spark-custom-izwkja,
+#ioxu9q.spark-custom-ioxu9q,
+#iqv6u5.spark-custom-iqv6u5,
+#i53zwj.spark-custom-i53zwj,
+#i156mc.spark-custom-i156mc,
+#ixeu0j.spark-custom-ixeu0j,
+#ioyiqs.spark-custom-ioyiqs,
+#i31v8.spark-custom-i31v8,
+#imhssf.spark-custom-imhssf,
+#iirtn5.spark-custom-iirtn5,
+#iu7hzg.spark-custom-iu7hzg,
+#io88k9.spark-custom-io88k9,
+#iask1.spark-custom-iask1,
+#ijn4ov.spark-custom-ijn4ov,
+#i3ul6k.spark-custom-i3ul6k {
+  color: #163029;
+}
+
+/* Text content overrides - force text-base-content to #163029 */
+.text-base-content {
+  color: #163029 !important;
+}
+
+/* Neutralize variants with opacity */
+[class*="text-base-content/"] {
+  color: #163029 !important;
+  opacity: 1 !important;
+}
+
+/* Common card styles */
+.filter-sidebar {
+  background: #fff;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.5rem;
+  transition: 0.25s;
+}
+
+.card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--color-primary);
+}
+
+.text-primary {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.btn-outline:hover {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+.chip.chip-active { background:#163029; color:#fff; border-color:#163029; }
+
+[data-cat].btn-active {
+  background-color: #163029;
+  color: #fff;
+  border-color: #163029;
+}
+/* =============================
+   Filtros (estado ativo bem visível)
+   ============================= */
+
+/* Estado normal */
+[data-cat],
+.badge[data-cat] {
+  background-color: #ffffff;
+  color: #163029;
+  border: 1px solid #d9c89e;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+[data-cat]:hover,
+.badge[data-cat]:hover {
+  background-color: #d9c89e;
+  color: #163029;
+}
+
+/* Estado ativo — claramente diferente */
+[data-cat].active,
+[data-cat].btn-active,
+.badge[data-cat].active,
+.badge[data-cat].btn-active {
+  background-color: #d9c89e !important;
+  color: #163029 !important;
+  border-color: #d9c89e !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(22, 48, 41, 0.4);
+}
+
+/* Efeito ao clicar */
+[data-cat]:active {
+  transform: scale(0.97);
+}
+
+/* Contact Section */
+
+#contact h2 {
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+#contact svg {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+#contact div:hover svg {
+  transform: scale(1.15);
+  color: #0f241d;
+}
+
+
+/* ===== Footer: Partner logos ===== */
+.footer-col .partner-logos {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 colunas desktop */
+  gap: 20px 24px;
+  align-items: center;
+  justify-items: start;
+}
+
+.footer-col .partner-logos li a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: transform .15s ease, opacity .15s ease, filter .2s ease;
+}
+
+.footer-col .partner-logos img {
+  max-height: 56px;      /* ajusta a altura máxima do logo */
+  width: auto;
+  /* pinta o logo próximo do #163029 quando for SVG/PNG monocromático */
+  filter: brightness(0) saturate(100%)
+          invert(18%) sepia(10%) saturate(800%)
+          hue-rotate(120deg) brightness(95%) contrast(95%);
+  opacity: 0.9;
+}
+
+.footer-col .partner-logos li a:hover img {
+  opacity: 1;
+  transform: translateY(-2px);
+  /* remove o filtro no hover para ficar mais “vivo” (se o ficheiro tiver cor própria) */
+  filter: none;
+}
+
+/* Responsivo: 2 colunas em tablets/telemóveis */
+@media (max-width: 1024px) {
+  .footer-col .partner-logos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .footer-col .partner-logos img { max-height: 48px; }
+}
+
+footer#id0obx {
+  border-top: 1px solid rgba(22, 48, 41, 0.1); /* Verde-escuro #163029, 10% */
+}
+/* Base do language switcher */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.lang-option {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+
+/* HEADER: fundo escuro, texto bege quando ativo */
+.lang-switch--header .lang-option {
+  color: #f5f5f0;              /* texto claro (ajusta se quiseres) */
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+.lang-switch--header .lang-option.lang-active {
+  color: #e3c88c;              /* bege do site (ajusta para o teu) */
+  opacity: 1;
+  font-weight: 700;            /* bold quando ativo */
+}
+
+/* FOOTER: texto normal, ativo a verde */
+.lang-switch--footer .lang-option {
+  color: #243424;              /* cor base (cinza/verde escuro) */
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.lang-switch--footer .lang-option.lang-active {
+  color: #136a3b;              /* verde do site (ajusta para o teu) */
+  opacity: 1;
+  font-weight: 700;            /* bold quando ativo */
+}
+
+/* Acessibilidade */
+.lang-option:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+.text-forest {
+    color: #0f2e20 !important; /* verde escuro do teu site */
+}
+

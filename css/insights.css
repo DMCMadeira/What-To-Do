@@ -1,0 +1,17 @@
+/* Insights page specific styles */
+/* Estado ativo do filtro */
+#insightsFilters .filter-btn.btn-active,
+#insightsFilters .filter-btn:focus {
+  background: #163029 !important;
+  color: #fff !important;
+  border-color: #163029 !important;
+}
+
+/* Ensure Quick Access Toolbar is fixed to viewport */
+.fixed.bottom-6.right-6 {
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+  z-index: 50 !important;
+}
+

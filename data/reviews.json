@@ -1,0 +1,84 @@
+{
+  "levada-walk": {
+    "avgRating": 4.8,
+    "totalReviews": 3,
+    "breakdown": {
+      "5": 67,
+      "4": 33,
+      "3": 0,
+      "2": 0,
+      "1": 0
+    },
+    "items": [
+      {
+        "name": "Sarah Mitchell",
+        "initials": "SM",
+        "country": "United Kingdom",
+        "countryCode": "GB",
+        "lang": "en",
+        "dateLabel": "October 2024",
+        "rating": 5,
+        "text": "Absolutely loved this levada walk! The guide was super friendly and the views were unforgettable.",
+        "helpful": 4
+      },
+      {
+        "name": "João Silva",
+        "initials": "JS",
+        "country": "Portugal",
+        "countryCode": "PT",
+        "lang": "pt",
+        "dateLabel": "Setembro 2024",
+        "rating": 5,
+        "text": "Experiência incrível, paisagens lindíssimas e excelente explicação ao longo do percurso.",
+        "helpful": 2
+      },
+      {
+        "name": "Anna Müller",
+        "initials": "AM",
+        "country": "Germany",
+        "countryCode": "DE",
+        "lang": "de",
+        "dateLabel": "August 2024",
+        "rating": 4,
+        "text": "Very beautiful hike, a bit crowded but still worth it.",
+        "helpful": 1
+      }
+    ]
+  },
+
+  "canyoning-ribeira": {
+    "avgRating": 4.9,
+    "totalReviews": 2,
+    "breakdown": {
+      "5": 100,
+      "4": 0,
+      "3": 0,
+      "2": 0,
+      "1": 0
+    },
+    "items": [
+      {
+        "name": "Luis Fernández",
+        "initials": "LF",
+        "country": "Spain",
+        "countryCode": "ES",
+        "lang": "es",
+        "dateLabel": "July 2024",
+        "rating": 5,
+        "text": "Una experiencia brutal, mucha adrenalina y todo muy seguro.",
+        "helpful": 3
+      },
+      {
+        "name": "Emma Johnson",
+        "initials": "EJ",
+        "country": "USA",
+        "countryCode": "US",
+        "lang": "en",
+        "dateLabel": "June 2024",
+        "rating": 5,
+        "text": "Best activity we did in Madeira! Highly recommended.",
+        "helpful": 5
+      }
+    ]
+  }
+}

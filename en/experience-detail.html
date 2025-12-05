@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="business">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Experience Detail - What to Do</title>
+
+    <!-- daisyUI + Tailwind (browser) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5" media="all" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" media="all" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Iconify (icons) -->
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2/dist/iconify-icon.min.js"></script>
+
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="../css/common.css" />
+    <!-- Page-specific CSS (se quiseres, renomeia para experience-detail.css) -->
+    <link rel="stylesheet" href="../css/teste2.css" />
+  </head>
+
+  <body class="min-h-screen bg-base-100 flex flex-col">
+    <common-section section_id="common_header">
+      <div class="flex-1">
+        <!-- Header slot (injetado via common.js) -->
+        <div id="header-slot"></div>
+
+        <main class="container mx-auto px-4 lg:px-8 py-10 space-y-10">
+          <!-- Breadcrumb -->
+          <nav class="text-sm breadcrumbs text-base-content/70 mt-4 mb-2">
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="experiences.html">Experiences</a></li>
+              <li class="text-base-content font-medium">Experience</li>
+            </ul>
+          </nav>
+
+          <!-- Título + meta info -->
+          <section class="space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h1 id="exp-title" class="text-3xl lg:text-4xl font-bold text-base-content">
+                  Experience Title Template
+                </h1>
+                <p id="exp-summary" class="text-base text-base-content/70 mt-2 max-w-2xl">
+                  Short intro sentence about the experience. Replace this text
+                  when you create a specific experience.
+                </p>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <iconify-icon icon="mdi:star" width="20" height="20" class="text-warning"></iconify-icon>
+                <span id="exp-rating" class="font-semibold">4.8</span>
+                <span id="exp-reviews" class="text-sm text-base-content/60">(123 reviews)</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- INFO + GALERIA + BOOKING LADO A LADO -->
+          <section class="grid gap-8 lg:grid-cols-3 items-start mt-6">
+            <!-- COLUNA ESQUERDA: info cards + galeria -->
+            <div class="space-y-6 lg:col-span-2">
+              <!-- Experience Summary Info -->
+              <section id="exp-info" class="grid gap-4 md:grid-cols-4">
+                <!-- DURATION -->
+                <div class="p-4 bg-base-200 rounded-xl shadow-sm flex items-start gap-3">
+                  <iconify-icon icon="mdi:clock-time-four-outline" width="28" class="text-primary"></iconify-icon>
+                  <div>
+                    <p class="text-sm text-base-content/70">Duration</p>
+                    <p id="exp-duration" class="font-semibold text-base-content">
+                      Full-day (8 hours)
+                    </p>
+                  </div>
+                </div>
+
+                <!-- LOCATION -->
+                <div class="p-4 bg-base-200 rounded-xl shadow-sm flex items-start gap-3">
+                  <iconify-icon icon="mdi:map-marker-outline" width="28" class="text-primary"></iconify-icon>
+                  <div>
+                    <p class="text-sm text-base-content/70">Location</p>
+                    <p id="exp-location" class="font-semibold text-base-content">
+                      Madeira Island
+                    </p>
+                  </div>
+                </div>
+
+                <!-- DIFFICULTY -->
+                <div class="p-4 bg-base-200 rounded-xl shadow-sm flex items-start gap-3">
+                  <iconify-icon icon="mdi:speedometer-slow" width="28" class="text-primary"></iconify-icon>
+                  <div>
+                    <p class="text-sm text-base-content/70">Difficulty</p>
+                    <p id="exp-difficulty" class="font-semibold text-base-content">
+                      Moderate
+                    </p>
+                  </div>
+                </div>
+
+                <!-- GROUP SIZE -->
+                <div class="p-4 bg-base-200 rounded-xl shadow-sm flex items-start gap-3">
+                  <iconify-icon icon="mdi:account-group-outline" width="28" class="text-primary"></iconify-icon>
+                  <div>
+                    <p class="text-sm text-base-content/70">Group Size</p>
+                    <p id="exp-group-size" class="font-semibold text-base-content">
+                      Max 12 people
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Galeria -->
+              <section class="space-y-4">
+                <div class="w-full rounded-xl overflow-hidden shadow-elegant">
+                  <img id="exp-hero"
+                    src="https://images.unsplash.com/photo-1672481364809-4ff1b36b8c79?auto=format&fit=crop&w=1200&q=80"
+                    alt="Experience main image" class="w-full h-72 md:h-96 object-cover" />
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                  <button class="btn btn-ghost btn-sm p-0 rounded-xl overflow-hidden thumbnail-btn">
+                    <img
+                      src="https://images.unsplash.com/photo-1682687220866-c856f566f1bd?auto=format&fit=crop&w=600&q=80"
+                      alt="Thumbnail 1" class="w-full h-24 object-cover" />
+                  </button>
+                  <button class="btn btn-ghost btn-sm p-0 rounded-xl overflow-hidden thumbnail-btn">
+                    <img
+                      src="https://images.unsplash.com/photo-1616362347716-f531c8c75c59?auto=format&fit=crop&w=600&q=80"
+                      alt="Thumbnail 2" class="w-full h-24 object-cover" />
+                  </button>
+                  <button class="btn btn-ghost btn-sm p-0 rounded-xl overflow-hidden thumbnail-btn">
+                    <img
+                      src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=600&q=80"
+                      alt="Thumbnail 3" class="w-full h-24 object-cover" />
+                  </button>
+                </div>
+              </section>
+            </div>
+
+            <!-- COLUNA DIREITA: booking panel -->
+            <aside id="bookingPanel" class="card bg-base-100 shadow-elegant border border-base-300" data-min-age="7"
+              data-price-adult="95" data-price-child="70">
+              <div class="card-body space-y-4">
+                <!-- Preço base / info rápida -->
+                <div class="flex items-baseline justify-between gap-2">
+                  <div>
+                    <p class="text-xs uppercase tracking-wide text-base-content/60">
+                      From
+                    </p>
+                    <p class="text-3xl font-bold text-primary">
+                      €<span id="exp-base-price">95</span>
+                    </p>
+                    <p class="text-xs text-forest">per adult</p>
+                  </div>
+                  <div class="flex flex-wrap justify-end gap-2 text-sm mt-1">
+                    <span id="exp-category-badge" class="badge badge-primary badge-outline">
+                      Category
+                    </span>
+                  </div>
+                </div>
+
+                <div class="divider my-2"></div>
+
+                <!-- FORMULÁRIO DE RESERVA -->
+                <form id="bookingForm" class="space-y-4">
+                  <!-- Data -->
+                  <div class="form-control">
+                    <label for="exp-date" class="label">
+                      <span class="label-text font-medium text-forest">Date</span>
+                    </label>
+                    <input type="date" id="exp-date" name="date" class="input input-bordered w-full" required />
+                  </div>
+
+                  <!-- Número de participantes -->
+                  <div class="grid grid-cols-2 gap-3">
+                    <div class="form-control">
+                      <label for="exp-adults" class="label">
+                        <span class="label-text font-medium">Adults</span>
+                      </label>
+                      <select id="exp-adults" name="adults" class="select select-bordered w-full">
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                      </select>
+                    </div>
+
+                    <div class="form-control">
+                      <label for="exp-children" class="label">
+                        <span class="label-text font-medium">Children</span>
+                      </label>
+                      <select id="exp-children" name="children" class="select select-bordered w-full">
+                        <option value="0" selected>0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Info sobre idades -->
+                  <p class="text-xs text-base-content/70" id="exp-age-note">
+                    Minimum age: <span id="exp-min-age">7</span> years.
+                    Children price applies from 7 to 12 years old.
+                  </p>
+
+                  <!-- Campo extra para canyoning / info adicional -->
+                  <div id="exp-extra-info" class="space-y-2 hidden">
+                    <p class="text-sm font-medium">
+                      Additional info for this activity
+                    </p>
+                    <div class="form-control">
+                      <label class="label cursor-pointer">
+                        <span class="label-text text-sm">All participants can swim confidently</span>
+                        <input type="checkbox" class="checkbox checkbox-sm" name="canSwim" />
+                      </label>
+                    </div>
+                    <div class="form-control">
+                      <label class="label">
+                        <span class="label-text text-sm">Any medical conditions we should know
+                          about?</span>
+                      </label>
+                      <textarea class="textarea textarea-bordered text-sm" name="medicalNotes" rows="2"
+                        placeholder="Optional, but recommended for canyoning and adventure activities."></textarea>
+                    </div>
+                  </div>
+
+                  <!-- Total estimado -->
+                  <div class="bg-base-200 rounded-xl px-3 py-2 text-sm flex items-center justify-between">
+                    <span class="text-base-content/80">Estimated total</span>
+                    <span class="font-semibold text-base-content">
+                      €<span id="exp-total">190</span>
+                    </span>
+                  </div>
+
+                  <!-- Botão de envio -->
+                  <button type="submit" class="btn btn-primary w-full mt-1">
+                    Request booking
+                  </button>
+
+                  <p class="text-xs text-base-content/60 text-center">
+                    Your request will be handled by our team. We’ll confirm
+                    availability and final price before booking.
+                  </p>
+                </form>
+              </div>
+            </aside>
+          </section>
+
+          <!-- EXPERIENCE DETAILS (full width) -->
+          <section class="mt-12 space-y-4">
+            <h2 class="text-2xl font-semibold">Experience Details</h2>
+
+            <!-- Detailed Itinerary -->
+            <div class="collapse collapse-arrow bg-base-100 border border-base-300">
+              <input type="checkbox" />
+              <div class="collapse-title font-medium flex items-center gap-2 text-forest">
+                <iconify-icon icon="mdi:map-outline" width="22" class="text-primary"></iconify-icon>
+                <span>Detailed Itinerary</span>
+              </div>
+              <div class="collapse-content text-sm text-base-content/80 space-y-2">
+                <p>
+                  Use this area to describe the itinerary step-by-step...
+                </p>
+              </div>
+            </div>
+
+            <!-- What's Included -->
+            <div class="collapse collapse-arrow bg-base-100 border border-base-300">
+              <input type="checkbox" />
+              <div class="collapse-title font-medium flex items-center gap-2 text-forest">
+                <iconify-icon icon="mdi:check-circle-outline" width="22" class="text-primary"></iconify-icon>
+                <span>What's Included</span>
+              </div>
+              <div class="collapse-content text-sm text-base-content/80 space-y-1">
+                <ul class="list-disc list-inside space-y-1">
+                  <li>Professional guide</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- What to Bring -->
+            <div class="collapse collapse-arrow bg-base-100 border border-base-300">
+              <input type="checkbox" />
+              <div class="collapse-title font-medium flex items-center gap-2 text-forest">
+                <iconify-icon icon="mdi:alert-outline" width="22" class="text-warning"></iconify-icon>
+                <span>What to Bring</span>
+              </div>
+              <div class="collapse-content text-sm text-base-content/80">
+                <div class="grid gap-3 md:grid-cols-2">
+                  <ul class="space-y-1">
+                    <li class="flex items-start gap-2">
+                      <iconify-icon icon="mdi:alert-outline" width="18" class="text-warning mt-0.5"></iconify-icon>
+                      <span>Comfortable walking shoes with good grip</span>
+                    </li>
+                  </ul>
+
+                  <ul class="space-y-1">
+                    <li class="flex items-start gap-2">
+                      <iconify-icon icon="mdi:alert-outline" width="18" class="text-warning mt-0.5"></iconify-icon>
+                      <span>Water bottle (min. 1 liter)</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Important Notes -->
+            <div class="collapse collapse-arrow bg-base-100 border border-base-300">
+              <input type="checkbox" />
+              <div class="collapse-title font-medium flex items-center gap-2 text-forest">
+                <iconify-icon icon="mdi:information-outline" width="22" class="text-primary"></iconify-icon>
+                <span>Important Notes</span>
+              </div>
+              <div class="collapse-content text-sm text-base-content/80 space-y-1">
+                <p>
+                  Add critical information such as age limits, weather policies, etc.
+                </p>
+              </div>
+            </div>
+
+            <!-- Language & Availability -->
+            <div class="collapse collapse-arrow bg-base-100 border border-base-300">
+              <input type="checkbox" />
+              <div class="collapse-title font-medium flex items-center gap-2 text-forest">
+                <iconify-icon icon="mdi:information-outline" width="22" class="text-primary"></iconify-icon>
+                <span>Language & Availability</span>
+              </div>
+              <div class="collapse-content text-sm text-base-content/80 space-y-1">
+                <p>
+                  Add critical information such as languages offered, regular
+                  departures, private options, etc.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- SIMILAR EXPERIENCES -->
+          <section class="mt-16 space-y-6">
+            <div class="flex items-center justify-between gap-4">
+              <h2 class="text-2xl font-semibold">Similar Experiences</h2>
+              <a href="experiences.html" class="text-sm link link-primary">
+                View all experiences
+              </a>
+            </div>
+
+            <div id="similarExperiencesGrid" class="grid gap-6 lg:grid-cols-3">
+              <!-- cards são injetados via JS -->
+            </div>
+          </section>
+
+          <!-- REVIEWS (apenas lista) -->
+          <section id="reviews-section" class="mt-12 space-y-8 hidden">
+            <div class="flex flex-wrap items-center justify-between gap-6">
+              <div>
+                <h2 class="text-2xl font-semibold">Reviews</h2>
+                <p class="text-sm text-base-content/70">
+                  What our guests say about this experience.
+                </p>
+              </div>
+            </div>
+
+            <div id="rev-list" class="space-y-4">
+              <!-- Reviews serão injetadas via JS -->
+            </div>
+          </section>
+        </main>
+      </div>
+    </common-section>
+
+    <!-- SLOT para o footer (injetado via common.js) -->
+    <div id="footer-slot"></div>
+
+    <!-- Quick Access Toolbar -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+      <div data-tip="Back to top" class="tooltip tooltip-left">
+        <button class="btn btn-circle btn-primary shadow-elegant hover-lift" onclick="scrollToTop()">
+          <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="20" height="20"
+            viewBox="0 0 24 24" class="iconify">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div data-tip="Contact us" class="tooltip tooltip-left">
+        <button class="btn btn-circle btn-primary shadow-elegant hover-lift"
+          onclick="window.location.href='index.html#contact'">
+          <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="20" height="20"
+            viewBox="0 0 24 24" class="iconify">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193q-.51.041-1.02.072v3.091l-3-3q-2.031 0-4.02-.163a2.1 2.1 0 0 1-.825-.242m9.345-8.334a2 2 0 0 0-.476-.095a48.6 48.6 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.5 48.5 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402c-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235q.865.113 1.74.194V21l4.155-4.155">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Common JavaScript -->
+    <script src="../js/common.js"></script>
+    <!-- Page-specific JavaScript -->
+    <script src="../js/experience-detail.js"></script>
+  </body>
+
+</html>

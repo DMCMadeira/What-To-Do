@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Experiences – Madeira</title>
+
+    <!-- DaisyUI + temas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" />
+    <!-- Tailwind (browser) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Icones -->
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+
+    <!-- CSS comum e específico -->
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/index.css" />
+  </head>
+
+  <body class="min-h-screen flex flex-col bg-base-100">
+
+    <!-- SLOT para o header (carregado via common.js) -->
+    <div id="header-slot"></div>
+
+    <!-- =========================================================
+       HERO
+       ========================================================= -->
+    <section class="relative hero min-h-96"
+      style="background-image:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1600&auto=format&fit=crop');">
+      <div class="hero-overlay"></div>
+      <div class="container mx-auto px-4 py-16 text-white">
+        <h1 class="text-5xl lg:text-6xl font-bold">Experiences na Madeira</h1>
+        <p class="mt-4 max-w-4xl text-white/90">Discover authentic activities, explore our hikes, nature and sea.</p>
+        <div class="mt-6 flex flex-wrap gap-2">
+          <a class="btn btn-primary" href="#sec-experiences">See Experiences</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       CONTEÚDO
+       ========================================================= -->
+    <main class="flex-1">
+
+      <div class="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-6">
+
+        <!-- Filter -->
+        <aside id="filterBox" class="w-full lg:w-80 shrink-0">
+          <div class="card bg-base-100 border border-base-300 shadow-lg">
+            <div class="card-body gap-4 thin-scroll">
+              <h2 class="card-title">Filter</h2>
+
+              <!-- Category-->
+              <div class="collapse bg-base-200">
+                <input type="checkbox" aria-label="Abrir filtro de categoria" />
+                <div class="collapse-title font-medium">Category</div>
+                <div class="collapse-content">
+                  <div id="filterCategories" class="flex flex-wrap gap-2"></div>
+                </div>
+              </div>
+
+              <!-- Duration -->
+              <div class="collapse bg-base-200">
+                <input type="checkbox" aria-label="Abrir filtro de duração" />
+                <div class="collapse-title font-medium">Duration</div>
+                <div class="collapse-content">
+                  <select id="durationSelect" class="select select-bordered w-full">
+                    <option value="- not defined -">- not defined -</option>
+                    <option value="short">Up to 2h</option>
+                    <option value="medium">Half day</option>
+                    <option value="long">Full Day</option>
+                  </select>
+                </div>
+              </div>
+
+              <button id="clearFilters" class="btn btn-outline w-full mt-2">Clear Filters</button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Coluna de conteúdo: grelha + botão (na mesma coluna) -->
+        <section id="sec-experiences" class="flex-1 py-12">
+          <div class="container mx-auto px-4">
+
+            <div class="text-center mb-8">
+              <h2 class="text-3xl font-bold text-base-content">Experiences</h2>
+            </div>
+
+            <!-- Grid de cards -->
+            <div id="experiencesGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+
+            <!-- Ver mais -->
+            <div class="text-center mt-10">
+              <button id="loadMoreExp" class="btn btn-outline btn-lg px-10">Ver mais</button>
+            </div>
+
+          </div>
+        </section>
+        <!-- REVIEWS & RATINGS (hidden until we have data) -->
+        <section id="reviews-section" class="mt-12 space-y-8 hidden">
+          <div class="flex flex-wrap items-center justify-between gap-6">
+            <div>
+              <h2 class="text-2xl font-semibold">
+                Reviews &amp; Ratings
+              </h2>
+              <p class="text-sm text-base-content/70">
+                Based on real experiences from our guests.
+              </p>
+            </div>
+          </div>
+
+          <!-- Top summary -->
+          <div class="grid gap-8 lg:grid-cols-[1fr,2fr] items-center">
+            <!-- Average rating -->
+            <div class="text-center space-y-2">
+              <p class="text-4xl font-bold text-primary" id="rev-avg-rating">0.0</p>
+              <p class="text-sm text-base-content/70">
+                Based on <span id="rev-total">0</span> reviews
+              </p>
+            </div>
+
+            <!-- Breakdown -->
+            <div class="space-y-2 w-full max-w-xl ml-auto">
+              <div class="flex items-center gap-2 text-sm">
+                <span class="w-20 text-right">5★</span>
+                <progress class="progress progress-primary flex-1" id="rev-bar-5" value="0" max="100"></progress>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <span class="w-20 text-right">4★</span>
+                <progress class="progress progress-primary flex-1" id="rev-bar-4" value="0" max="100"></progress>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <span class="w-20 text-right">3★</span>
+                <progress class="progress progress-primary flex-1" id="rev-bar-3" value="0" max="100"></progress>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <span class="w-20 text-right">2★</span>
+                <progress class="progress progress-primary flex-1" id="rev-bar-2" value="0" max="100"></progress>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <span class="w-20 text-right">1★</span>
+                <progress class="progress progress-primary flex-1" id="rev-bar-1" value="0" max="100"></progress>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews list -->
+          <div id="rev-list" class="space-y-4">
+            <!-- Reviews serão injetadas via JS -->
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Common JavaScript -->
+    <script src="../js/common.js" defer></script>
+    <!-- Page-specific JavaScript -->
+    <script src="../js/experiences.js" defer></script>
+
+    <!-- SLOT para o footer -->
+    <div id="footer-slot"></div>
+
+    <!-- Quick Access Toolbar -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+      <div data-tip="Back to top" class="tooltip tooltip-left">
+        <button class="btn btn-circle btn-primary shadow-elegant hover-lift" onclick="scrollToTop()">
+          <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="20" height="20"
+            viewBox="0 0 24 24" class="iconify">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div data-tip="Contact us" class="tooltip tooltip-left">
+        <button class="btn btn-circle btn-primary shadow-elegant hover-lift" onclick="window.location.href='index.html#contact'">
+          <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="20" height="20"
+            viewBox="0 0 24 24" class="iconify">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193q-.51.041-1.02.072v3.091l-3-3q-2.031 0-4.02-.163a2.1 2.1 0 0 1-.825-.242m9.345-8.334a2 2 0 0 0-.476-.095a48.6 48.6 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.5 48.5 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402c-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235q.865.113 1.74.194V21l4.155-4.155">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+  </body>
+</html>

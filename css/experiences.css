@@ -1,0 +1,27 @@
+/* experiences page specific styles */
+/* Additional styles if needed beyond common.css */
+/* css/experiences.css */
+
+/* realça o botão ativo do filtro com o verde 163029 */
+#expFilters .filter-btn.btn-active,
+#expFilters .filter-btn:focus {
+  background: #163029 !important;
+  color: #fff !important;
+  border-color: #163029 !important;
+}
+
+/* hover leve nos cards */
+.card:hover {
+  border-color: #163029;
+  box-shadow: 0 12px 24px rgba(0,0,0,.08);
+}
+
+/* se usares line-clamp utilitária, garante compat */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+          line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
