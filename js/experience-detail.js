@@ -228,6 +228,35 @@ function countryCodeToFlagEmoji(code) {
       extraInfoBlock.classList.remove('hidden');
     }
 
+    function collectExtraInfoAnswers() {
+      const answers = {};
+      if (!extraInfoBlock || !extraInfoConfig || !Array.isArray(extraInfoConfig.fields)) {
+        return answers;
+      }
+
+      extraInfoConfig.fields.forEach((field) => {
+        if (!field || !field.type) return;
+        const name = field.name || field.type;
+
+        if (field.type === 'checkbox') {
+          const input = extraInfoBlock.querySelector(`input[name="${name}"]`);
+          if (input) {
+            answers[name] = !!input.checked;
+          }
+        }
+
+        if (field.type === 'textarea') {
+          const textarea = extraInfoBlock.querySelector(`textarea[name="${name}"]`);
+          if (textarea) {
+            answers[name] = textarea.value.trim();
+          }
+        }
+      });
+
+      return answers;
+    }
+
+
     // Limites de data (de hoje até +1 ano)
     if (dateInput) {
       const today = new Date();
@@ -301,7 +330,7 @@ function countryCodeToFlagEmoji(code) {
       }
 
       if (modalConfirmBtn) {
-        modalConfirmBtn.addEventListener('click', () => {
+        modalConfirmBtn.addEventListener('click', async () => {
           const type = getSelectedContactType();
           const contact = modalContactValue ? modalContactValue.value.trim() : '';
 
@@ -314,9 +343,51 @@ function countryCodeToFlagEmoji(code) {
             return;
           }
 
-          const channelLabel = type === 'whatsapp' ? 'WhatsApp' : 'email';
 
-          // Aqui, no futuro, podes enviar estes dados para a tua API.
+          // construir payload para enviar à API
+          const adults = adultsSelect ? Number(adultsSelect.value || 0) : 0;
+          const children = childrenSelect ? Number(childrenSelect.value || 0) : 0;
+          const date = dateInput ? dateInput.value : '';
+          const totalText = totalSpan ? totalSpan.textContent : '0';
+          const totalEstimate = Number(totalText || 0);
+
+          const extraInfoAnswers = collectExtraInfoAnswers();
+          const language = document.documentElement.lang || 'en';
+
+          const payload = {
+            experienceId: exp.id,
+            experienceTitle: exp.title,
+            category: exp.category,
+            date,
+            adults,
+            children,
+            totalEstimate,
+            extraInfoAnswers,
+            contactType: type,        // "email" ou "whatsapp"
+            contactValue: contact,    // email ou número
+            language,
+            submittedAt: new Date().toISOString()
+          };
+
+          try {
+            const response = await fetch('/api/send-booking', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+              console.error('send-booking failed with status', response.status);
+              alert('There was an error sending your request. Please try again in a moment.');
+              return;
+            }
+
+            // Aqui no futuro: podemos adaptar a mensagem por EN/PT
+            const channelLabel = type === 'whatsapp' ? 'WhatsApp' : 'email';
+
+
           alert(
             `Your booking request has been registered.\n` +
               `Our team will confirm availability and you will receive the confirmation via ${channelLabel}: ${contact}.`
@@ -325,6 +396,10 @@ function countryCodeToFlagEmoji(code) {
           confirmModal.close();
           if (bookingForm) bookingForm.reset();
           updateTotal();
+           } catch (err) {
+              console.error('Error calling /api/send-booking:', err);
+              alert('There was a network error sending your request. Please check your connection and try again.');
+            }
         });
       }
 
