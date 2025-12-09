@@ -152,13 +152,19 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ success: false, error: 'Email not configured.' });
     }
 
+    const portNumber = Number(SMTP_PORT);
+
     const transporter = nodemailer.createTransport({
       host: SMTP_HOST,
-      port: Number(SMTP_PORT),
-      secure: false,
+      port: portNumber,
+      secure: portNumber === 465, // true só se usares 465, para 587 fica false
       auth: {
         user: SMTP_USER,
         pass: SMTP_PASS
+      },
+      tls: {
+        // alguns providers (como mailbox.pt) têm certificados que podem não ser "trusted" por defeito
+        rejectUnauthorized: false
       }
     });
 
@@ -185,6 +191,9 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error('❌ Error in /api/send-booking:', err);
-    return res.status(500).json({ success: false, error: 'Unexpected server error.' });
+    return res.status(500).json({
+      success: false,
+      error: err.message || 'Unexpected server error.'
+    });
   }
 };
