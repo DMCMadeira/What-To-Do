@@ -245,7 +245,7 @@ async function sendWhatsAppConfirmation(payload) {
   const { WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID } = process.env;
 
 
-  if (!WHATSAPP_TOKEN || !WHATSAPP_PHONE_ID) {
+  if (!WHATSAPP_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
     console.warn('WhatsApp env vars not configured. Skipping WhatsApp send.');
     return;
   }
