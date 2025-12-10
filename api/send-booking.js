@@ -1,6 +1,9 @@
 // api/send-booking.js
 const nodemailer = require('nodemailer');
 
+/* ---------------------------------------
+ * Helpers para texto
+ * -------------------------------------*/
 function formatExtraInfo(extraInfoAnswers) {
   if (!extraInfoAnswers || typeof extraInfoAnswers !== 'object') {
     return 'No additional information provided.';
@@ -26,6 +29,9 @@ function formatExtraInfo(extraInfoAnswers) {
     .join('\n');
 }
 
+/* ---------------------------------------
+ * Email interno (pode ficar só em EN)
+ * -------------------------------------*/
 function buildInternalEmail(payload) {
   const {
     experienceId,
@@ -75,6 +81,9 @@ Please check availability and contact the guest to confirm or adjust the booking
   return { subject, text };
 }
 
+/* ---------------------------------------
+ * Email para o cliente (PT / EN)
+ * -------------------------------------*/
 function buildClientEmail(payload) {
   const {
     experienceTitle,
@@ -84,37 +93,79 @@ function buildClientEmail(payload) {
     totalEstimate,
     extraInfoAnswers,
     contactType,
-    contactValue
+    contactValue,
+    language
   } = payload;
 
-  // Só enviamos email se o cliente introduziu email
-  if (contactType !== 'email' || !contactValue) return null;
+  if (contactType !== 'email' || !contactValue) {
+    return null;
+  }
 
+  const lang = (language || 'en').toLowerCase();
   const extraInfoBlock = formatExtraInfo(extraInfoAnswers);
+  const totalText = `€${Number.isFinite(totalEstimate) ? totalEstimate : 0}`;
 
-  const subject = `Pre-booking received – ${experienceTitle}`;
+  let subject;
+  let text;
 
-  const text = `
+  if (lang === 'pt') {
+    subject = `Pré-reserva recebida – ${experienceTitle || 'a sua experiência'}`;
+    text = `
+Olá,
+
+Obrigado pelo seu pedido!
+Recebemos a sua pré-reserva para a seguinte experiência:
+
+=== Experiência ===
+${experienceTitle || '-'}
+Data: ${date || '-'}
+Adultos: ${adults ?? 0}
+Crianças: ${children ?? 0}
+Valor estimado: ${totalText}
+
+=== Informação adicional que indicou ===
+${extraInfoBlock}
+
+Atenção: esta ainda NÃO é a confirmação final da reserva.
+
+A nossa equipa vai agora verificar a disponibilidade e entrará em contacto
+consigo para confirmar a reserva ou sugerir alternativas, se necessário.
+
+Se detetar algum erro na informação acima ou precisar de alterar algo,
+pode contactar-nos através de:
+
+Email: marketing@dmcmadeira.pt
+WhatsApp: +351 9xx xxx xxx
+
+Obrigado,
+What to Do Madeira / DMC Madeira
+`.trim();
+  } else {
+    // EN (default)
+    subject = `Pre-booking received – ${experienceTitle || 'your experience'}`;
+    text = `
 Hello,
 
 Thank you for your request!
 We have received your pre-booking for the following experience:
 
 === Experience ===
-${experienceTitle}
+${experienceTitle || '-'}
 Date: ${date || '-'}
 Adults: ${adults ?? 0}
 Children: ${children ?? 0}
-Estimated total: €${Number.isFinite(totalEstimate) ? totalEstimate : 0}
+Estimated total: ${totalText}
 
 === Additional information you provided ===
 ${extraInfoBlock}
 
 Please note: this is NOT the final booking confirmation yet.
 
-Our team will now check availability and will contact you to confirm your booking.
+Our team will now check availability and will contact you to confirm your booking
+or suggest alternatives if needed.
 
-If you notice any mistake in the information above or need to change anything, contact us at:
+If you notice any mistake in the information above or need to change anything,
+you can contact us at:
 
 Email: marketing@dmcmadeira.pt
 WhatsApp: +351 9xx xxx xxx
@@ -122,10 +173,118 @@ WhatsApp: +351 9xx xxx xxx
 Thank you,
 What to Do Madeira / DMC Madeira
 `.trim();
+  }
 
   return { subject, text, to: contactValue };
 }
 
+/* ---------------------------------------
+ * Mensagem WhatsApp (PT / EN)
+ * -------------------------------------*/
+function buildWhatsAppText(payload) {
+  const {
+    experienceTitle,
+    date,
+    adults,
+    children,
+    totalEstimate,
+    extraInfoAnswers,
+    language
+  } = payload;
+
+  const lang = (language || 'en').toLowerCase();
+  const extraInfoBlock = formatExtraInfo(extraInfoAnswers);
+  const totalText = `€${Number.isFinite(totalEstimate) ? totalEstimate : 0}`;
+
+  if (lang === 'pt') {
+    return `
+Pré-reserva recebida ✅
+
+Experiência: ${experienceTitle || '-'}
+Data: ${date || '-'}
+Adultos: ${adults ?? 0}
+Crianças: ${children ?? 0}
+Valor estimado: ${totalText}
+
+Informação adicional:
+${extraInfoBlock}
+
+Esta ainda NÃO é a confirmação final da sua reserva.
+A nossa equipa vai verificar a disponibilidade e entraremos em contacto
+consigo em breve para confirmar ou ajustar a reserva.
+
+Se precisar de alguma alteração urgente, responda diretamente a esta mensagem.
+`.trim();
+  }
+
+  // EN (default)
+  return `
+Pre-booking received ✅
+
+Experience: ${experienceTitle || '-'}
+Date: ${date || '-'}
+Adults: ${adults ?? 0}
+Children: ${children ?? 0}
+Estimated total: ${totalText}
+
+Additional information:
+${extraInfoBlock}
+
+This is NOT yet the final booking confirmation.
+Our team will check availability and will contact you soon
+to confirm or adjust your booking.
+
+If you need any urgent changes, you can reply directly to this message.
+`.trim();
+}
+
+/* ---------------------------------------
+ * Envio de WhatsApp via WhatsApp Cloud API
+ * -------------------------------------*/
+async function sendWhatsAppConfirmation(payload) {
+  const { WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID } = process.env;
+
+
+  if (!WHATSAPP_TOKEN || !WHATSAPP_PHONE_ID) {
+    console.warn('WhatsApp env vars not configured. Skipping WhatsApp send.');
+    return;
+  }
+
+  const { contactType, contactValue } = payload;
+  if (contactType !== 'whatsapp' || !contactValue) {
+    return;
+  }
+
+  // O cliente deve fornecer o número em formato internacional (+351....)
+  const to = contactValue.trim();
+  const body = buildWhatsAppText(payload);
+
+  const url = `https://graph.facebook.com/v19.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${WHATSAPP_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      to,
+      type: 'text',
+      text: { body }
+    })
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    console.error('WhatsApp API error:', response.status, errText);
+    throw new Error('WhatsApp API error');
+  }
+}
+
+/* ---------------------------------------
+ * Handler principal
+ * -------------------------------------*/
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -157,18 +316,17 @@ module.exports = async function handler(req, res) {
     const transporter = nodemailer.createTransport({
       host: SMTP_HOST,
       port: portNumber,
-      secure: portNumber === 465, // true só se usares 465, para 587 fica false
+      secure: portNumber === 465,
       auth: {
         user: SMTP_USER,
         pass: SMTP_PASS
       },
       tls: {
-        // alguns providers (como mailbox.pt) têm certificados que podem não ser "trusted" por defeito
         rejectUnauthorized: false
       }
     });
 
-    // 1) Email interno para ti
+    // 1) Email interno
     const internalEmail = buildInternalEmail(payload);
     await transporter.sendMail({
       from: BOOKING_FROM_EMAIL,
@@ -177,7 +335,7 @@ module.exports = async function handler(req, res) {
       text: internalEmail.text
     });
 
-    // 2) Email de pré-reserva para o cliente (se aplicável)
+    // 2) Email para o cliente (se escolheu email)
     const clientEmail = buildClientEmail(payload);
     if (clientEmail) {
       await transporter.sendMail({
@@ -186,6 +344,11 @@ module.exports = async function handler(req, res) {
         subject: clientEmail.subject,
         text: clientEmail.text
       });
+    }
+
+    // 3) WhatsApp para o cliente (se escolheu WhatsApp)
+    if (payload.contactType === 'whatsapp') {
+      await sendWhatsAppConfirmation(payload);
     }
 
     return res.status(200).json({ success: true });
