@@ -244,43 +244,63 @@ If you need any urgent changes, you can reply directly to this message.
 async function sendWhatsAppConfirmation(payload) {
   const { WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID } = process.env;
 
-
+  // 1) Verificar variáveis de ambiente
   if (!WHATSAPP_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
     console.warn('WhatsApp env vars not configured. Skipping WhatsApp send.');
     return;
   }
 
   const { contactType, contactValue } = payload;
+
+  // 2) Só envia se o cliente escolheu WhatsApp
   if (contactType !== 'whatsapp' || !contactValue) {
+    console.log('WhatsApp not selected or no number provided, skipping.');
     return;
   }
 
-  // O cliente deve fornecer o número em formato internacional (+351....)
+  // Número tem de vir em formato internacional +351...
   const to = contactValue.trim();
-  const body = buildWhatsAppText(payload);
+  const bodyText = buildWhatsAppText(payload);
 
   const url = `https://graph.facebook.com/v19.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${WHATSAPP_TOKEN}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      messaging_product: 'whatsapp',
-      to,
-      type: 'text',
-      text: { body }
-    })
-  });
+  console.log('➡️ Sending WhatsApp message to:', to);
+  console.log('➡️ WhatsApp API URL:', url);
 
-  if (!response.ok) {
-    const errText = await response.text();
-    console.error('WhatsApp API error:', response.status, errText);
-    throw new Error('WhatsApp API error');
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${WHATSAPP_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        to,
+        type: 'text',
+        text: { body: bodyText }
+      })
+    });
+
+    const responseText = await response.text();
+    if (!response.ok) {
+      console.error(
+        'WhatsApp API error:',
+        response.status,
+        response.statusText,
+        responseText
+      );
+      // Não atiramos erro para não estragar o fluxo de emails
+      return;
+    }
+
+    console.log('✅ WhatsApp API success:', response.status, responseText);
+  } catch (err) {
+    console.error('WhatsApp fetch error:', err);
+    // Outra vez: não atiramos erro para não quebrar o resto
   }
 }
+
 
 /* ---------------------------------------
  * Handler principal
