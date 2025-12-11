@@ -126,6 +126,7 @@ function countryCodeToFlagEmoji(code) {
 
     const confirmModal = document.getElementById('bookingConfirmModal');
     const modalSummary = document.getElementById('modal-summary');
+    const modalCustomerName = document.getElementById('modal-customer-name');
     const modalContactLabel = document.getElementById('modal-contact-label');
     const modalContactValue = document.getElementById('modal-contact-value');
     const modalFinalNote = document.getElementById('modal-final-note');
@@ -333,7 +334,12 @@ function countryCodeToFlagEmoji(code) {
         modalConfirmBtn.addEventListener('click', async () => {
           const type = getSelectedContactType();
           const contact = modalContactValue ? modalContactValue.value.trim() : '';
+          const customerName = modalCustomerName ? modalCustomerName.value.trim() : '';
 
+          if (!customerName) {
+            alert('Please enter your name.');
+            return;
+          }
           if (!contact) {
             alert(
               type === 'whatsapp'
@@ -363,6 +369,7 @@ function countryCodeToFlagEmoji(code) {
             children,
             totalEstimate,
             extraInfoAnswers,
+            customerName,
             contactType: type,        // "email" ou "whatsapp"
             contactValue: contact,    // email ou número
             language,

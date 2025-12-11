@@ -233,77 +233,91 @@
               </div>
             </aside>
           </section>
-          <!-- BOOKING CONFIRMATION MODAL -->
-          <dialog id="bookingConfirmModal" class="modal">
-            <div class="modal-box max-w-lg">
-              <h3 class="font-bold text-lg text-forest mb-2">Booking summary</h3>
+      <dialog id="bookingConfirmModal" class="modal">
+        <div class="modal-box max-w-lg">
+          <h3 class="font-bold text-lg text-forest mb-2">Booking summary</h3>
 
-              <p id="modal-summary" class="text-sm text-base-content/80 whitespace-pre-line">
-                <!-- preenchido via JS -->
-              </p>
+          <p id="modal-summary" class="text-sm text-base-content/80 whitespace-pre-line">
+            <!-- preenchido via JS -->
+          </p>
 
-              <div class="mt-4 space-y-3">
-                <p class="text-sm font-medium text-forest">
-                  How would you like to receive your confirmation?
-                </p>
-
-                <div class="flex flex-wrap gap-4">
-                  <label class="label cursor-pointer gap-2">
-                    <span class="label-text text-sm text-forest">Email</span>
-                    <input
-                      type="radio"
-                      name="contactType"
-                      value="email"
-                      class="radio radio-sm"
-                      checked
-                    />
-                  </label>
-                  <label class="label cursor-pointer gap-2">
-                    <span class="label-text text-sm text-forest">WhatsApp</span>
-                    <input
-                      type="radio"
-                      name="contactType"
-                      value="whatsapp"
-                      class="radio radio-sm"
-                    />
-                  </label>
-                </div>
-
-                <div class="form-control">
-                  <label class="label">
-                    <span id="modal-contact-label" class="label-text text-sm text-forest">
-                      Email
-                    </span>
-                  </label>
-                  <input
-                    id="modal-contact-value"
-                    type="text"
-                    class="input input-bordered w-full text-forest placeholder-forest"
-                    placeholder="your@email.com"
-                  />
-                </div>
-
-                <p id="modal-final-note" class="text-xs text-base-content/70">
-                  Your booking request has been created. Our team will confirm availability
-                  and you will receive that confirmation via email.
-                </p>
-              </div>
-
-              <div class="modal-action mt-4">
-                <button
-                  type="button"
-                  class="btn btn-ghost text-forest hover:bg-base-200"
-                  id="modalCancelBtn"
-                >
-                  Cancel
-                </button>
-
-                <button type="button" class="btn btn-primary" id="modalConfirmBtn">
-                  Confirm booking
-                </button>
-              </div>
+          <div class="mt-4 space-y-3">
+            <!-- 👇 NOVO: campo para o nome -->
+            <div class="form-control">
+              <label class="label" for="modal-customer-name">
+                <span class="label-text text-sm text-forest">Name</span>
+              </label>
+              <input
+                id="modal-customer-name"
+                type="text"
+                class="input input-bordered w-full text-forest placeholder-forest"
+                placeholder="Your name"
+                required
+              />
             </div>
-          </dialog>
+
+            <p class="text-sm font-medium text-forest">
+              How would you like to receive your confirmation?
+            </p>
+
+            <div class="flex flex-wrap gap-4">
+              <label class="label cursor-pointer gap-2">
+                <span class="label-text text-sm text-forest">Email</span>
+                <input
+                  type="radio"
+                  name="contactType"
+                  value="email"
+                  class="radio radio-sm"
+                  checked
+                />
+              </label>
+              <label class="label cursor-pointer gap-2">
+                <span class="label-text text-sm text-forest">WhatsApp</span>
+                <input
+                  type="radio"
+                  name="contactType"
+                  value="whatsapp"
+                  class="radio radio-sm"
+                />
+              </label>
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span id="modal-contact-label" class="label-text text-sm text-forest">
+                  Email
+                </span>
+              </label>
+              <input
+                id="modal-contact-value"
+                type="text"
+                class="input input-bordered w-full text-forest placeholder-forest"
+                placeholder="your@email.com"
+              />
+            </div>
+
+            <p id="modal-final-note" class="text-xs text-base-content/70">
+              Your booking request has been created. Our team will confirm availability
+              and you will receive that confirmation via email.
+            </p>
+          </div>
+
+          <div class="modal-action mt-4">
+            <button
+              type="button"
+              class="btn btn-ghost text-forest hover:bg-base-200"
+              id="modalCancelBtn"
+            >
+              Cancel
+            </button>
+
+            <button type="button" class="btn btn-primary" id="modalConfirmBtn">
+              Confirm booking
+            </button>
+          </div>
+        </div>
+      </dialog>
+
 
 
           <!-- EXPERIENCE DETAILS (full width) -->
