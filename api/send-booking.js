@@ -30,6 +30,30 @@ function formatExtraInfo(extraInfoAnswers) {
 }
 
 /* ---------------------------------------
+ * Código de reserva (sem BD, versão simples)
+ * Formato: YYMMDD[L]-NN  ex: 251211A-03
+ * -------------------------------------*/
+function generateBookingReference(payload) {
+  const { date, experienceId } = payload;
+
+  const todayIso = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const baseDate = date || todayIso;
+  const [yyyy, mm, dd] = baseDate.split('-');
+
+  const yy = (yyyy || '0000').slice(-2);
+  const letter =
+    typeof experienceId === 'string' && experienceId.length > 0
+      ? experienceId[0].toUpperCase()
+      : 'X';
+
+  // Número “fake” por agora, até termos BD (00–99)
+  const randomNum = Math.floor(Math.random() * 100);
+  const numPart = String(randomNum).padStart(2, '0');
+
+  return `${yy}${mm}${dd}${letter}-${numPart}`;
+}
+
+/* ---------------------------------------
  * Email interno (pode ficar só em EN)
  * -------------------------------------*/
 function buildInternalEmail(payload) {
@@ -45,15 +69,19 @@ function buildInternalEmail(payload) {
     contactType,
     contactValue,
     language,
-    submittedAt
+    submittedAt,
+    customerName,
+    bookingReference
   } = payload;
 
   const extraInfoBlock = formatExtraInfo(extraInfoAnswers);
 
-  const subject = `New pre-booking – ${experienceTitle} – ${date || 'no date'}`;
+  const subject = `New pre-booking – ${experienceTitle} – ${date || 'no date'} – ${bookingReference || '-'}`;
 
   const text = `
 New pre-booking received from the website.
+
+Booking reference: ${bookingReference || '-'}
 
 === Experience ===
 ID: ${experienceId || '-'}
@@ -64,6 +92,9 @@ Date: ${date || '-'}
 Adults: ${adults ?? 0}
 Children: ${children ?? 0}
 Estimated total: €${Number.isFinite(totalEstimate) ? totalEstimate : 0}
+
+=== Guest ===
+Name: ${customerName || '-'}
 
 === Additional information from the guest ===
 ${extraInfoBlock}
@@ -94,7 +125,9 @@ function buildClientEmail(payload) {
     extraInfoAnswers,
     contactType,
     contactValue,
-    language
+    language,
+    customerName,
+    bookingReference
   } = payload;
 
   if (contactType !== 'email' || !contactValue) {
@@ -109,12 +142,14 @@ function buildClientEmail(payload) {
   let text;
 
   if (lang === 'pt') {
-    subject = `Pré-reserva recebida – ${experienceTitle || 'a sua experiência'}`;
+    subject = `Pré-reserva recebida – ${experienceTitle || 'a sua experiência'} – ${bookingReference || '-'}`;
     text = `
-Olá,
+Olá${customerName ? ` ${customerName}` : ''},
 
 Obrigado pelo seu pedido!
 Recebemos a sua pré-reserva para a seguinte experiência:
+
+Referência de reserva: ${bookingReference || '-'}
 
 === Experiência ===
 ${experienceTitle || '-'}
@@ -142,12 +177,14 @@ What to Do Madeira / DMC Madeira
 `.trim();
   } else {
     // EN (default)
-    subject = `Pre-booking received – ${experienceTitle || 'your experience'}`;
+    subject = `Pre-booking received – ${experienceTitle || 'your experience'} – ${bookingReference || '-'}`;
     text = `
-Hello,
+Hello${customerName ? ` ${customerName}` : ''},
 
 Thank you for your request!
 We have received your pre-booking for the following experience:
+
+Booking reference: ${bookingReference || '-'}
 
 === Experience ===
 ${experienceTitle || '-'}
@@ -179,67 +216,15 @@ What to Do Madeira / DMC Madeira
 }
 
 /* ---------------------------------------
- * Mensagem WhatsApp (PT / EN)
- * -------------------------------------*/
-function buildWhatsAppText(payload) {
-  const {
-    experienceTitle,
-    date,
-    adults,
-    children,
-    totalEstimate,
-    extraInfoAnswers,
-    language
-  } = payload;
-
-  const lang = (language || 'en').toLowerCase();
-  const extraInfoBlock = formatExtraInfo(extraInfoAnswers);
-  const totalText = `€${Number.isFinite(totalEstimate) ? totalEstimate : 0}`;
-
-  if (lang === 'pt') {
-    return `
-Pré-reserva recebida ✅
-
-Experiência: ${experienceTitle || '-'}
-Data: ${date || '-'}
-Adultos: ${adults ?? 0}
-Crianças: ${children ?? 0}
-Valor estimado: ${totalText}
-
-Informação adicional:
-${extraInfoBlock}
-
-Esta ainda NÃO é a confirmação final da sua reserva.
-A nossa equipa vai verificar a disponibilidade e entraremos em contacto
-consigo em breve para confirmar ou ajustar a reserva.
-
-Se precisar de alguma alteração urgente, responda diretamente a esta mensagem.
-`.trim();
-  }
-
-  // EN (default)
-  return `
-Pre-booking received ✅
-
-Experience: ${experienceTitle || '-'}
-Date: ${date || '-'}
-Adults: ${adults ?? 0}
-Children: ${children ?? 0}
-Estimated total: ${totalText}
-
-Additional information:
-${extraInfoBlock}
-
-This is NOT yet the final booking confirmation.
-Our team will check availability and will contact you soon
-to confirm or adjust your booking.
-
-If you need any urgent changes, you can reply directly to this message.
-`.trim();
-}
-
-/* ---------------------------------------
- * Envio de WhatsApp via WhatsApp Cloud API
+ * WhatsApp – template booking_pre_confirmation
+ * Variáveis no template:
+ *  {{1}} Experience
+ *  {{2}} Date
+ *  {{3}} Adults
+ *  {{4}} Children
+ *  {{5}} Estimated total
+ *  {{6}} Additional information
+ *  {{7}} Booking reference
  * -------------------------------------*/
 async function sendWhatsAppConfirmation(payload) {
   const { WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID } = process.env;
@@ -249,22 +234,58 @@ async function sendWhatsAppConfirmation(payload) {
     return;
   }
 
-  const { contactType, contactValue, language } = payload;
+  const {
+    contactType,
+    contactValue,
+    language,
+    experienceTitle,
+    date,
+    adults,
+    children,
+    totalEstimate,
+    extraInfoAnswers,
+    bookingReference
+  } = payload;
+
   if (contactType !== 'whatsapp' || !contactValue) {
     return;
   }
 
-  // número do cliente em formato internacional, ex: +351939473552
-  const to = contactValue.trim();
+  const to = contactValue.trim(); // ex: +351939473552
+  const langCode = (language || 'en').toLowerCase() === 'pt' ? 'pt_PT' : 'en_US';
 
-  // idioma do template (podes ajustar para pt_PT se tiveres um template PT)
-  const lang = (language || 'en').toLowerCase();
-  const langCode = lang === 'pt' ? 'pt_PT' : 'en_US';
+  const totalNumber = Number(totalEstimate || 0);
+  const totalText = `${totalNumber.toFixed(2)}€`;
+  const extraInfoBlock = formatExtraInfo(extraInfoAnswers);
 
   const url = `https://graph.facebook.com/v19.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
   console.log('Sending WhatsApp template message to:', to);
   console.log('WhatsApp API URL:', url);
+
+  const body = {
+    messaging_product: 'whatsapp',
+    to,
+    type: 'template',
+    template: {
+      name: 'booking_pre_confirmation', // nome do teu template
+      language: { code: langCode },
+      components: [
+        {
+          type: 'body',
+          parameters: [
+            { type: 'text', text: experienceTitle || '-' },                 // {{1}}
+            { type: 'text', text: date || '-' },                            // {{2}}
+            { type: 'text', text: adults != null ? String(adults) : '0' },  // {{3}}
+            { type: 'text', text: children != null ? String(children) : '0' }, // {{4}}
+            { type: 'text', text: totalText },                              // {{5}}
+            { type: 'text', text: extraInfoBlock },                         // {{6}}
+            { type: 'text', text: bookingReference || '-' }                 // {{7}}
+          ]
+        }
+      ]
+    }
+  };
 
   const response = await fetch(url, {
     method: 'POST',
@@ -272,15 +293,7 @@ async function sendWhatsAppConfirmation(payload) {
       Authorization: `Bearer ${WHATSAPP_TOKEN}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      messaging_product: 'whatsapp',
-      to,
-      type: 'template',
-      template: {
-        name: 'hello_world',           // mesmo template do painel
-        language: { code: langCode }
-      }
-    })
+    body: JSON.stringify(body)
   });
 
   if (!response.ok) {
@@ -292,8 +305,6 @@ async function sendWhatsAppConfirmation(payload) {
     console.log('WhatsApp API success (template):', JSON.stringify(data));
   }
 }
-
-
 
 /* ---------------------------------------
  * Handler principal
@@ -310,6 +321,12 @@ module.exports = async function handler(req, res) {
 
     console.log('📩 New booking payload received:', payload);
 
+    // Gera (ou reaproveita) a referência de reserva
+    const bookingReference = payload.bookingReference || generateBookingReference(payload);
+    const payloadWithRef = { ...payload, bookingReference };
+
+    console.log('Generated booking reference:', bookingReference);
+
     const {
       SMTP_HOST,
       SMTP_PORT,
@@ -319,7 +336,14 @@ module.exports = async function handler(req, res) {
       BOOKING_TO_EMAIL
     } = process.env;
 
-    if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS || !BOOKING_FROM_EMAIL || !BOOKING_TO_EMAIL) {
+    if (
+      !SMTP_HOST ||
+      !SMTP_PORT ||
+      !SMTP_USER ||
+      !SMTP_PASS ||
+      !BOOKING_FROM_EMAIL ||
+      !BOOKING_TO_EMAIL
+    ) {
       console.error('Missing SMTP or booking email environment variables.');
       return res.status(500).json({ success: false, error: 'Email not configured.' });
     }
@@ -340,7 +364,7 @@ module.exports = async function handler(req, res) {
     });
 
     // 1) Email interno
-    const internalEmail = buildInternalEmail(payload);
+    const internalEmail = buildInternalEmail(payloadWithRef);
     await transporter.sendMail({
       from: BOOKING_FROM_EMAIL,
       to: BOOKING_TO_EMAIL,
@@ -349,7 +373,7 @@ module.exports = async function handler(req, res) {
     });
 
     // 2) Email para o cliente (se escolheu email)
-    const clientEmail = buildClientEmail(payload);
+    const clientEmail = buildClientEmail(payloadWithRef);
     if (clientEmail) {
       await transporter.sendMail({
         from: BOOKING_FROM_EMAIL,
@@ -360,11 +384,11 @@ module.exports = async function handler(req, res) {
     }
 
     // 3) WhatsApp para o cliente (se escolheu WhatsApp)
-    if (payload.contactType === 'whatsapp') {
-      await sendWhatsAppConfirmation(payload);
+    if (payloadWithRef.contactType === 'whatsapp') {
+      await sendWhatsAppConfirmation(payloadWithRef);
     }
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, bookingReference });
   } catch (err) {
     console.error('❌ Error in /api/send-booking:', err);
     return res.status(500).json({
